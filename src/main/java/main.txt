@@ -1,0 +1,84 @@
+
+
+//es lo primero que he planteado
+
+
+
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Main {
+
+    public static void main(String[] args) {
+        /*List<Usuario> usuarioList = new ArrayList<Usuario>();
+        //Creamos un par de usuarios
+        Usuario user1 = new Usuario("David");
+        usuarioList.add(user1);
+        Usuario user2 = new Usuario("Arnau");
+        usuarioList.add(user2);
+
+        List <Producto> listaProductos = new ArrayList<Producto>();
+        //creamos algunos pedidos
+        Producto produc1 = new Producto("Patata", 2.3);
+        listaProductos.add(produc1);
+
+        Producto produc2 = new Producto("Jamón", 9.5);
+        listaProductos.add(produc2);
+
+        Producto produc3 = new Producto("Zanaoria", 3.2);
+        listaProductos.add(produc3);
+
+        Arrays.sort(new List[]{listaProductos});
+        */
+        /*
+        //Realizar un pedido
+        Scanner sc = new Scanner(System.in);
+        Logger logger = Logger.getLogger("myLogger");
+        logger.log(Level.SEVERE, "Identifíquese como usuario");
+        logger.log(Level.SEVERE, "Nombre:");
+        String nombreUsuario = sc.nextLine();
+        Usuario userRegis = new Usuario(nombreUsuario);
+        //forma dos de hacer mas compleja
+        */
+        /*
+        for (int z=0; z<usuarioList.size(); z++){
+            if(usuarioList.equals(nombreUsuario)){
+                Usuario userRegis = new Usuario(nombreUsuario);
+            }
+            else{
+                //pondira un mensaje de que el ususario no esta registrado
+            }
+
+        }
+
+        logger.log(Level.SEVERE, "Cuantos productos quieres comprar:");
+        String contador = sc.nextLine();
+        int cont = Integer.parseInt(contador);
+        int i=0;
+        while (i<cont) {
+            logger.log(Level.SEVERE, "Producto:");
+            String nombreProducto = sc.nextLine();
+            for(Producto producComp: listaProductos){
+                if (producComp.getNombre().equals(nombreProducto)) {
+                    userRegis.pedidoList.add(producComp);
+                    producComp.incremento();
+                }
+            }
+        }
+        */
+
+
+
+
+
+
+    }
+
+
+
+}
