@@ -1,13 +1,14 @@
-package main.java;
-
+package Product;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class ProductManagerImpl implements ProductManager{
+public class ProductManagerImpl implements ProductManager {
     List<Producto> listaProductos = new ArrayList<Producto>();
-    List<Producto> listaProductosVendidosTotal = new ArrayList<Producto>();
     List<Usuario> listaUsuarios =new ArrayList<Usuario>();
+    List<Pedido> listaPedidosTotal = new LinkedList<Pedido>();
+    // i per la llista de pedidos total
+    int i = 0;
+    // contadorPedidos per saber quin tamany te la llista de pedidos total
+    int contadorPedidos = 0;
 
     //Scanner sc = new Scanner(System.in);
     //Logger logger = Logger.getLogger("myLogger");
@@ -45,7 +46,7 @@ public class ProductManagerImpl implements ProductManager{
     */
     public Usuario consultarUsuario(String nombre) {
         for(Usuario userRegis: listaUsuarios){
-            if (userRegis.getNom().equals(nombre)) {
+            if (userRegis.getNombre().equals(nombre)) {
                 return userRegis;
             }
         }
@@ -59,62 +60,100 @@ public class ProductManagerImpl implements ProductManager{
             }
         }
         return null;
-
     }
-    public int realizarPedido (Usuario userRegis, String producto){
-        Producto produ= consultarProducto(producto);
-        userRegis.pedidoList.add(produ);
-        listaProductosVendidosTotal.add(produ);
-        produ.incremento();
-        int resp=1;
+    public boolean consultarProductoCatalogo (Producto p){
+        boolean resp = false;
+        for(Producto producComp: listaProductos){
+            if (producComp.getNombre().equals(p.getNombre())) {
+                resp = true;
+            }
+        }
         return resp;
     }
-    public int realizarPedidoRest (Usuario userRegis, List<Producto> realizarList){
-        int rp=0;
-        for (Producto product: realizarList) {
-            userRegis.pedidoList.add(product);
-            listaProductosVendidosTotal.add(product);
-            product.incremento();
-            rp = 1;
+    public boolean consultarPedido (Pedido pedido){
+        boolean resp=false;
+        for(Producto producComp: pedido.productosList){
+            resp = consultarProductoCatalogo(producComp);
         }
-        return rp;
-
+        return resp;
     }
-    /*
-    public boolean realizarPedido (Usuario userRegis){
-        //como ya esta identificado nos pasan el nombre del usuario
-        int conf=0;
-        logger.log(Level.SEVERE, "Cuantos productos quieres comprar:");
-        String contador = sc.nextLine();
-        int cont = Integer.parseInt(contador);
-        for (int i=0; i<cont; i++) {
-            logger.log(Level.SEVERE, "Producto:");
-            String nombreProducto = sc.nextLine();
-            Producto produ= consultarProducto(nombreProducto);
-            userRegis.pedidoList.add(produ);
-            listaProductosVendidosTotal.add(produ);
-            produ.incremento();
-            conf++;
+/*
+    public boolean realizarPedido (Usuario user, List<String> lista){
+        // logger.info(pedido)
+
+        List<String> realizarList = new ArrayList(lista);
+        if(user==null){
+            return false;
         }
-        if (conf==cont){
+        else {
+            for (String product : realizarList) {
+                Producto produc = consultarProducto(product);
+                user.pedidoList.add(produc);
+            }
             return true;
         }
-        else return false;
     }
     */
-    public List<Producto> listadoPedidos(){
+    public void añadirProductoVendido (Pedido pedido){
+        List<Producto> productosList = pedido.productosList;
+        List<String> numDeCadaProducto = pedido.numDeCadaProducto;
+
+    }
+    public boolean realizarPedido (String nombre, Pedido pedido){
+        // logger.info(pedido)
+        boolean resp = false;
+        Usuario u = consultarUsuario(nombre);
+        if (u==null){
+            return resp;
+        }
+        else{
+            pedido.setUsuario(nombre);
+            resp = consultarPedido(pedido);
+            if (resp==true){
+                listaPedidosTotal.add(pedido);
+                contadorPedidos++;
+            }
+            return resp;
+        }
+    }
+    public Pedido servirPedido (){
+        Pedido p = new Pedido();
+        if (i<=contadorPedidos){
+            p = listaPedidosTotal.get(i);
+            //añadimos los productos comprados
+            añadirProductoVendido(p);
+            String nombreUser = p.getUsuario();
+            Usuario u = consultarUsuario(nombreUser);
+            u.pedidoList.add(p);
+            p.setPedidoRealizado(true);
+            return p;
+        }
+        else{
+            p=null;
+            return p;
+        }
+    }
+
+
+    public List<Producto> listadoPedidos(String nombre){
+
+
+    }
+
+    public List<Producto> listadoProductosByVentas (){
         //ordenamos la lista de productoss por el numero de ventas
-        List<Producto> listaOrdenadaVentas = listaProductos;
+        List<Producto> listaOrdenadaVentas = new ArrayList(listaProductos);
         Collections.sort(listaOrdenadaVentas, Comparator.comparing(Producto::getNumeroVentas));
+
+        //Collections.sort(listaOrdenadaVentas, Producto.CMP);
+
         Collections.reverse(listaOrdenadaVentas);
         return listaOrdenadaVentas;
 
         /*for (Producto product: listaProductos){
             logger.log(Level.SEVERE,  product.getNumeroVentas() +"  "+product.getNombre());
-
         }
         */
-
     }
     public Usuario identificarse(String nombre){
         //logger.log(Level.SEVERE, "Nombre de usuario:");
@@ -122,14 +161,7 @@ public class ProductManagerImpl implements ProductManager{
         Usuario user = consultarUsuario(nombre);
         return user;
     }
-    public List<Producto> servirPedido(Usuario userPeddio){
-        /*for (Producto product: userPeddio.pedidoList){
-            logger.log(Level.SEVERE, product.getNombre());
-        }
-        */
-        List<Producto> listaServirPedido = userPeddio.pedidoList;
-        return listaServirPedido;
-    }
+
     public List<Producto> servirPedidoRest(String user){
         /*for (Producto product: userPeddio.pedidoList){
             logger.log(Level.SEVERE, product.getNombre());

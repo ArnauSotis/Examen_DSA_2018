@@ -1,4 +1,4 @@
-package main.java;
+package Product;
 
 import java.util.List;
 import javax.sound.midi.Track;
@@ -10,12 +10,13 @@ import java.util.List;
 @Path("/json")
 public class JSONService {
 
-        protected List<Track> tracks;
-
         protected ProductManagerImpl productManagerImpl;
 
         public JSONService() {
             productManagerImpl = Singleton.getInstance().getImpl();
+
+            productManagerImpl.productosCreados();
+            productManagerImpl.usuariosExistentes();
         }
 
         @GET
@@ -40,9 +41,9 @@ public class JSONService {
         @Path("/compra/{user}/{list}")
         @Consumes(MediaType.APPLICATION_JSON)
         //public Response (@PathParam("user") String user,@PathParam("list") List<Producto> list) {
-        public Response compra (Usuario user, List<Producto> list) {
-            int colleja = productManagerImpl.realizarPedidoRest(user, list);
-            if (colleja==1){
+        public Response compra (Usuario user, List<String> list) {
+            boolean col  = productManagerImpl.realizarPedido(user, list);
+            if (col){
                 return Response.status(201).entity("Pedio preparado para realizar").build();
             }
             else{

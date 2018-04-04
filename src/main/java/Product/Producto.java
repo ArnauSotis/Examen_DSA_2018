@@ -1,9 +1,18 @@
-package main.java;
+package Product;
+
+import java.util.Comparator;
 
 public class Producto {
     private String Nombre;
     private double Precio;
     private int NumeroVentas=0;
+
+    public static Comparator<Producto> CMP = new Comparator<Producto>(){
+        @Override
+        public int compare(Producto o1, Producto o2) {
+            return o2.NumeroVentas-o1.NumeroVentas;
+        }
+    }
 
     public Producto(String nombre, double precio){
         this.Nombre = nombre;

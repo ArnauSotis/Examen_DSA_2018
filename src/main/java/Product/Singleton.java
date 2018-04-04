@@ -1,4 +1,4 @@
-package main.java;
+package Product;
 
 public class Singleton {
 
