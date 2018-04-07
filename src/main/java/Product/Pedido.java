@@ -12,6 +12,11 @@ public class Pedido {
     public List<Producto> productosList = new LinkedList<Producto>();
     public List<String> numDeCadaProducto = new LinkedList<String>();
 
+    public void add (Producto pd, String num ){
+        this.productosList.add(pd);
+        this.numDeCadaProducto.add(num);
+
+    }
     public String getUsuario() {
         return usuario;
     }
@@ -27,7 +32,5 @@ public class Pedido {
     public void setPedidoRealizado(boolean pedidoRealizado) {
         this.pedidoRealizado = pedidoRealizado;
     }
-
-
 
 }

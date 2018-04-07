@@ -24,7 +24,8 @@ public class Main {
     public static HttpServer startServer() {
         // create a resource config that scans for JAX-RS resources and providers
         // in edu.upc.dsa package
-        final ResourceConfig rc = new ResourceConfig().packages("edu.upc.dsa");
+        //aqui he tocat jo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        final ResourceConfig rc = new ResourceConfig().packages("Product");
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI

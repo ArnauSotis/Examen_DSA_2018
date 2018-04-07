@@ -17,7 +17,9 @@ public interface ProductManager {
 
 
     Usuario consultarUsuario(String nombre);
- /*   Producto consultarProducto (String producto);
-    Usuario identificarse(String nombre);
-*/
+    Producto consultarProducto (String producto);
+    boolean consultarProductoCatalogo (Producto p);
+    void addUser (Usuario newUser);
+    void addProduct (Producto newProduct);
+
 }

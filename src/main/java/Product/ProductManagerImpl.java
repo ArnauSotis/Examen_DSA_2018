@@ -35,6 +35,13 @@ public class ProductManagerImpl implements ProductManager {
         Usuario user2 = new Usuario("Arnau");
         listaUsuarios.add(user2);
     }
+    public void addUser (Usuario newUser) {
+        listaUsuarios.add(newUser);
+    }
+    public void addProduct (Producto newProduct){
+        listaProductos.add(newProduct);
+    }
+
     public Usuario identificarse(String nombre){
         //logger.log(Level.SEVERE, "Nombre de usuario:");
         //String nombre = sc.nextLine();
@@ -156,8 +163,13 @@ public class ProductManagerImpl implements ProductManager {
             añadirProductoVendido(p);
             String nombreUser = p.getUsuario();
             Usuario u = consultarUsuario(nombreUser);
-            u.pedidoList.add(p);
-            p.setPedidoRealizado(true);
+            if (u==null){
+                p=null;
+            }
+            else{
+                u.pedidoList.add(p);
+                p.setPedidoRealizado(true);
+            }
             i++;
             return p;
         }

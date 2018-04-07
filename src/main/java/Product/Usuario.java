@@ -11,7 +11,6 @@ public class Usuario {
 
     public Usuario (String nombre ){
         this.nombre = nombre;
-
     }
     /*
     public void mostrarPorPantala() {
