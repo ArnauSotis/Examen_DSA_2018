@@ -1,5 +1,7 @@
 package Product;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ProductManagerImpl implements ProductManager {
     List<Producto> listaProductos = new ArrayList<Producto>();
@@ -10,8 +12,8 @@ public class ProductManagerImpl implements ProductManager {
     // contadorPedidos per saber quin tamany te la llista de pedidos total
     int contadorPedidos = 0;
 
-    //Scanner sc = new Scanner(System.in);
-    //Logger logger = Logger.getLogger("myLogger");
+    Scanner sc = new Scanner(System.in);
+    Logger logger = Logger.getLogger("myLogger");
 
     public void productosCreados() {
         //creamos algunos productos por defecto
@@ -32,6 +34,12 @@ public class ProductManagerImpl implements ProductManager {
         listaUsuarios.add(user1);
         Usuario user2 = new Usuario("Arnau");
         listaUsuarios.add(user2);
+    }
+    public Usuario identificarse(String nombre){
+        //logger.log(Level.SEVERE, "Nombre de usuario:");
+        //String nombre = sc.nextLine();
+        Usuario user = consultarUsuario(nombre);
+        return user;
     }
     /*
     public void crearProducto (){
@@ -94,9 +102,29 @@ public class ProductManagerImpl implements ProductManager {
         }
     }
     */
+    public List<Producto> listarProductos(){
+        List<Producto> ordenarPorPrecio = new ArrayList<Producto>(listaProductos);
+        Collections.sort(ordenarPorPrecio, Comparator.comparing(Producto::getPrecio));
+        return ordenarPorPrecio;
+    }
     public void añadirProductoVendido (Pedido pedido){
         List<Producto> productosList = pedido.productosList;
         List<String> numDeCadaProducto = pedido.numDeCadaProducto;
+        int j=0;
+        //sin size
+        //while (productosList.get(j)!=null){
+
+        //con size
+        int x = productosList.size();
+        while (j<x){
+            Producto añadirProducto = productosList.get(j);
+            //cuantas veces compra el producto
+            String numeroDeCompra = numDeCadaProducto.get(j);
+            int num = Integer.parseInt(numeroDeCompra);
+            añadirProducto.incremento(num);
+            j++;
+        }
+
 
     }
     public boolean realizarPedido (String nombre, Pedido pedido){
@@ -118,14 +146,19 @@ public class ProductManagerImpl implements ProductManager {
     }
     public Pedido servirPedido (){
         Pedido p = new Pedido();
-        if (i<=contadorPedidos){
-            p = listaPedidosTotal.get(i);
+        //sin el size
+        //if (i<=contadorPedidos){
+        //   p = listaPedidosTotal.get(i);
+        //con size
+        int x = listaPedidosTotal.size();
+        if (i<x){
             //añadimos los productos comprados
             añadirProductoVendido(p);
             String nombreUser = p.getUsuario();
             Usuario u = consultarUsuario(nombreUser);
             u.pedidoList.add(p);
             p.setPedidoRealizado(true);
+            i++;
             return p;
         }
         else{
@@ -134,17 +167,39 @@ public class ProductManagerImpl implements ProductManager {
         }
     }
 
-
     public List<Producto> listadoPedidos(String nombre){
+        //devuelve todos los productos dentro de todos los pedidos realizados por el usuario
+        Usuario u = consultarUsuario(nombre);
+        List<Producto> listaProductosUsuario = new ArrayList<Producto>();
+        if (u == null){
+            // enviar mensaje de usuario no existe
+        }
+        else{
+            List<Pedido> listarPedidosUsuario = u.pedidoList;
+            for (Pedido pedi: listarPedidosUsuario){
+                //logger.log(Level.SEVERE,  pedi.getUsuario());
+                //he intenato meter una lista dentro de otra para meter todos los productos.
+                //Ahora em toca meter prodcuto por producto
+                // listaProductosUsuario.add(pedi.productosList);
+                int j=0;
+                int x = pedi.productosList.size();
+                while (j<x){
+                    listaProductosUsuario.add(pedi.productosList.get(j));
+                    j++;
+                }
 
+            }
+
+        }
+        return listaProductosUsuario;
 
     }
 
-    public List<Producto> listadoProductosByVentas (){
+    public List<Producto> listadoProductosByVentas () {
         //ordenamos la lista de productoss por el numero de ventas
         List<Producto> listaOrdenadaVentas = new ArrayList(listaProductos);
         Collections.sort(listaOrdenadaVentas, Comparator.comparing(Producto::getNumeroVentas));
-
+        //si pongo esta función hay un error en el producto que implementa esto
         //Collections.sort(listaOrdenadaVentas, Producto.CMP);
 
         Collections.reverse(listaOrdenadaVentas);
@@ -155,20 +210,15 @@ public class ProductManagerImpl implements ProductManager {
         }
         */
     }
-    public Usuario identificarse(String nombre){
-        //logger.log(Level.SEVERE, "Nombre de usuario:");
-        //String nombre = sc.nextLine();
-        Usuario user = consultarUsuario(nombre);
-        return user;
-    }
 
+    /*
     public List<Producto> servirPedidoRest(String user){
-        /*for (Producto product: userPeddio.pedidoList){
+        for (Producto product: userPeddio.pedidoList){
             logger.log(Level.SEVERE, product.getNombre());
         }
-        */
         Usuario userPedido = consultarUsuario(user);
         List<Producto> listaServirPedido = userPedido.pedidoList;
         return listaServirPedido;
     }
+    */
 }

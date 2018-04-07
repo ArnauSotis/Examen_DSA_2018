@@ -1,4 +1,9 @@
-package Product;
+/*package MainDeProducto;
+
+import Product.ProductManager;
+import Product.Producto;
+import Product.Singleton;
+import Product.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,3 +51,4 @@ public class Main {
         }
     }
 }
+*/

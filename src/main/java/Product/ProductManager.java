@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public interface ProductManager {
+    Usuario identificarse(String nombre);
     List<Producto> listarProductos();
     boolean realizarPedido (String nombre, Pedido pedido); //Usuario user, List<String> relizarList);
     Pedido servirPedido();

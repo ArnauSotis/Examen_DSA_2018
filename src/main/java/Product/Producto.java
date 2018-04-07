@@ -3,23 +3,25 @@ package Product;
 import java.util.Comparator;
 
 public class Producto {
-    private String Nombre;
-    private double Precio;
-    private int NumeroVentas=0;
+    private String nombre;
+    private double precio;
+    private int numeroVentas=0;
 
+    /*
     public static Comparator<Producto> CMP = new Comparator<Producto>(){
         @Override
         public int compare(Producto o1, Producto o2) {
-            return o2.NumeroVentas-o1.NumeroVentas;
+            return o2.numeroVentas-o1.numeroVentas;
         }
     }
+    */
 
     public Producto(String nombre, double precio){
-        this.Nombre = nombre;
-        this.Precio = precio;
+        this.nombre = nombre;
+        this.precio = precio;
     }
-    public void incremento (){
-        NumeroVentas++;
+    public void incremento (int x){
+        numeroVentas = numeroVentas + x;
     }
     /*
     public void mostrarPorPantalaProducto() {
@@ -29,22 +31,22 @@ public class Producto {
     }
     */
     public String getNombre() {
-        return Nombre;
+        return nombre;
     }
     public void setNombre(String Nom) {
-        this.Nombre = Nom;
+        this.nombre = Nom;
     }
     public double getPrecio() {
-        return Precio;
+        return precio;
     }
     public void setPrecio(double Pre) {
-        this.Precio = Pre;
+        this.precio = Pre;
     }
     public int getNumeroVentas(){
-        return NumeroVentas;
+        return numeroVentas;
     }
     public void setNumeroVentas( int ven){
-        this.NumeroVentas = ven;
+        this.numeroVentas = ven;
     }
 
 }
