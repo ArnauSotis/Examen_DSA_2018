@@ -16,18 +16,22 @@ public class JSONService {
         public JSONService() {
             productManagerImpl = Singleton.getInstance().getImpl();
 
-            productManagerImpl.productosCreados();
-            productManagerImpl.usuariosExistentes();
-            String nombre = "David";
-            String n1 = "2"; String n2 = "5";
-            Producto produc1 = new Producto("Patata", 2.3);
-            Producto produc2 = new Producto("Jamon", 3);
-            Pedido p = new Pedido();
-            p.productosList.add(produc1);
-            p.productosList.add(produc2);
-            p.numDeCadaProducto.add(n1);
-            p.numDeCadaProducto.add(n2);
-            productManagerImpl.realizarPedido(nombre,p);
+            if (productManagerImpl.iniciadorRest==0) {
+                productManagerImpl.productosCreados();
+                productManagerImpl.usuariosExistentes();
+                String nombre = "David";
+                String n1 = "2";
+                String n2 = "5";
+                Producto produc1 = new Producto("Patata", 2.3);
+                Producto produc2 = new Producto("Jamon", 3);
+                Pedido p = new Pedido();
+                p.productosList.add(produc1);
+                p.productosList.add(produc2);
+                p.numDeCadaProducto.add(n1);
+                p.numDeCadaProducto.add(n2);
+                productManagerImpl.realizarPedido(nombre, p);
+                productManagerImpl.iniciadorRest=1;
+            }
 
         }
         //para identificarse
@@ -40,22 +44,25 @@ public class JSONService {
 
         //lista los productos por precio que hay en el catalogo
         @GET
-        @Path("/listarProductos/")
+        @Path("/listarProductos")
         @Produces(MediaType.APPLICATION_JSON)
         public List<Producto> getListarProductos() {
-            return productManagerImpl.listaProductos;
+            List<Producto> listarProductosPorPrecio = null;
+            listarProductosPorPrecio = productManagerImpl.listarProductos();
+            return listarProductosPorPrecio;
         }
 
         //servir un pedido por orden
         @GET
-        @Path("/servir/")
+        @Path("/servir")
         @Produces(MediaType.APPLICATION_JSON)
         public Pedido getServir() {
-            return productManagerImpl.servirPedido();
+            Pedido p = productManagerImpl.servirPedido();
+            return p;
         }
         //listar los productos por numero de ventas
         @GET
-        @Path("/ventas/")
+        @Path("/ventas")
         @Produces(MediaType.APPLICATION_JSON)
         public List<Producto>  getProductosPorNumeroDeVentas() {
             return productManagerImpl.listadoProductosByVentas();

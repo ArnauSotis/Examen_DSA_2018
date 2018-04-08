@@ -33,4 +33,26 @@ public class Pedido {
         this.pedidoRealizado = pedidoRealizado;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Pedido pedido = (Pedido) o;
+
+        if (pedidoRealizado != pedido.pedidoRealizado) return false;
+        if (!usuario.equals(pedido.usuario)) return false;
+        if (!productosList.equals(pedido.productosList)) return false;
+        return numDeCadaProducto.equals(pedido.numDeCadaProducto);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = usuario.hashCode();
+        result = 31 * result + (pedidoRealizado ? 1 : 0);
+        result = 31 * result + productosList.hashCode();
+        result = 31 * result + numDeCadaProducto.hashCode();
+        return result;
+    }
+
 }
