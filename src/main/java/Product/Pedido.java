@@ -5,27 +5,40 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class Pedido {
-    String usuario = null;
+    Usuario usuario = null;
 
-    boolean pedidoRealizado= false;
+    private boolean pedidoRealizado= false;
 
-    public List<Producto> productosList = new LinkedList<Producto>();
-    public List<String> numDeCadaProducto = new LinkedList<String>();
+    //public List<Producto> productosList = new LinkedList<Producto>();
+    //public List<String> numDeCadaProducto = new LinkedList<String>();
+    private List<LineaDePedido> lp = null;
 
-    public void add (Producto pd, String num ){
-        this.productosList.add(pd);
-        this.numDeCadaProducto.add(num);
+    public Pedido() {
+      this.lp = new LinkedList<LineaDePedido>();
 
     }
-    public String getUsuario() {
+
+    public void add (Producto pd, int num ){
+       //this.productosList.add(pd);
+       //this.numDeCadaProducto.add(num);
+
+        this.lp.add(new LineaDePedido(pd, num));
+    }
+
+    public List<LineaDePedido> getListaDePedidos() {
+        return this.lp;
+    }
+
+
+    public Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public boolean isPedidoRealizado() {
+    public boolean setPedidoRealizado() {
         return pedidoRealizado;
     }
 
@@ -42,17 +55,14 @@ public class Pedido {
 
         if (pedidoRealizado != pedido.pedidoRealizado) return false;
         if (!usuario.equals(pedido.usuario)) return false;
-        if (!productosList.equals(pedido.productosList)) return false;
-        return numDeCadaProducto.equals(pedido.numDeCadaProducto);
+        return lp.equals(pedido.lp);
     }
 
     @Override
     public int hashCode() {
         int result = usuario.hashCode();
         result = 31 * result + (pedidoRealizado ? 1 : 0);
-        result = 31 * result + productosList.hashCode();
-        result = 31 * result + numDeCadaProducto.hashCode();
+        result = 31 * result + lp.hashCode();
         return result;
     }
-
 }

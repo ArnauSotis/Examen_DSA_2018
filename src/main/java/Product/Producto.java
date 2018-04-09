@@ -20,8 +20,9 @@ public class Producto {
         this.nombre = nombre;
         this.precio = precio;
     }
-    public void incremento (int x){
-        numeroVentas = numeroVentas + x;
+    public void incrementar (int x){
+
+        this.numeroVentas = this.numeroVentas + x;
     }
     /*
     public void mostrarPorPantalaProducto() {

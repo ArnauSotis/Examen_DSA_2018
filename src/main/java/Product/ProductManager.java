@@ -11,7 +11,7 @@ public interface ProductManager {
     List<Producto> listarProductos();
     boolean realizarPedido (String nombre, Pedido pedido); //Usuario user, List<String> relizarList);
     Pedido servirPedido();
-    List<Producto> listadoPedidos(String nombre);
+    List<Pedido> listadoPedidos(String nombre);
     List<Producto> listadoProductosByVentas();
 
 

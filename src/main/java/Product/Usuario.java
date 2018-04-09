@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Usuario {
     String nombre;
 
-    public List<Pedido> pedidoList = new LinkedList<Pedido>();
+    private List<Pedido> pedidoList = new LinkedList<Pedido>();
 
     public Usuario (String nombre ){
         this.nombre = nombre;
@@ -17,6 +17,12 @@ public class Usuario {
         System.out.println("NOMBRE: "+getNom());
     }
     */
+    public List<Pedido> consultaPedidos(){
+        return this.pedidoList;
+    }
+    public void addPedido (Pedido p){
+        this.pedidoList.add(p);
+    }
     public String getNombre() {
         return nombre;
     }

@@ -20,15 +20,13 @@ public class JSONService {
                 productManagerImpl.productosCreados();
                 productManagerImpl.usuariosExistentes();
                 String nombre = "David";
-                String n1 = "2";
-                String n2 = "5";
                 Producto produc1 = new Producto("Patata", 2.3);
                 Producto produc2 = new Producto("Jamon", 3);
                 Pedido p = new Pedido();
-                p.productosList.add(produc1);
-                p.productosList.add(produc2);
-                p.numDeCadaProducto.add(n1);
-                p.numDeCadaProducto.add(n2);
+
+                p.add(produc1,1);
+                p.add(produc2,3);
+
                 productManagerImpl.realizarPedido(nombre, p);
                 productManagerImpl.iniciadorRest=1;
             }
@@ -60,6 +58,7 @@ public class JSONService {
             Pedido p = productManagerImpl.servirPedido();
             return p;
         }
+
         //listar los productos por numero de ventas
         @GET
         @Path("/ventas")
@@ -67,16 +66,14 @@ public class JSONService {
         public List<Producto>  getProductosPorNumeroDeVentas() {
             return productManagerImpl.listadoProductosByVentas();
         }
+
         //lista pedidos de un usuario
         @GET
         @Path("/listar/{user}")
         @Produces(MediaType.APPLICATION_JSON)
-        public List<Producto> getListar(@PathParam("user") String user) {
+        public List<Pedido> getListar(@PathParam("user") String user) {
             return productManagerImpl.listadoPedidos(user);
         }
-
-        //listar producto por numero de ventas
-
 
         //realizar un pedido (una comra)
         @POST

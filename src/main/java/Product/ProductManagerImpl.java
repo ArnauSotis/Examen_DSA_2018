@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 public class ProductManagerImpl implements ProductManager {
     List<Producto> listaProductos = new ArrayList<Producto>();
     List<Usuario> listaUsuarios =new ArrayList<Usuario>();
-    List<Pedido> listaPedidosTotal = new LinkedList<Pedido>();
+    Queue<Pedido> listaPedidosTotal = new LinkedList<Pedido>();
     // contadorPedidos per saber quin tamany te la llista de pedidos total
     int contadorPedidos = 0;
     int i = 0;
@@ -48,17 +48,7 @@ public class ProductManagerImpl implements ProductManager {
         Usuario user = consultarUsuario(nombre);
         return user;
     }
-    /*
-    public void crearProducto (){
-        logger.log(Level.SEVERE, "Nombre del producto:");
-        String nombreProducto = sc.nextLine();
-        logger.log(Level.SEVERE, "Precio del producto:");
-        String precioProducto = sc.nextLine();
-        double precio = Double.parseDouble(precioProducto);
-        Producto produ = new Producto(nombreProducto, precio);
-        listaProductos.add(produ);
-    }
-    */
+
     public Usuario consultarUsuario(String nombre) {
         for(Usuario userRegis: listaUsuarios){
             if (userRegis.getNombre().equals(nombre)) {
@@ -87,34 +77,21 @@ public class ProductManagerImpl implements ProductManager {
     }
     public boolean consultarPedido (Pedido pedido){
         boolean resp=false;
-        for(Producto producComp: pedido.productosList){
-            resp = consultarProductoCatalogo(producComp);
+        for(LineaDePedido producComp: pedido.getListaDePedidos()){
+            resp = consultarProductoCatalogo(producComp.getProducto());
         }
         return resp;
     }
-/*
-    public boolean realizarPedido (Usuario user, List<String> lista){
-        // logger.info(pedido)
 
-        List<String> realizarList = new ArrayList(lista);
-        if(user==null){
-            return false;
-        }
-        else {
-            for (String product : realizarList) {
-                Producto produc = consultarProducto(product);
-                user.pedidoList.add(produc);
-            }
-            return true;
-        }
-    }
-    */
     public List<Producto> listarProductos(){
         List<Producto> ordenarPorPrecio = new ArrayList<Producto>(listaProductos);
         Collections.sort(ordenarPorPrecio, Comparator.comparing(Producto::getPrecio));
         return ordenarPorPrecio;
     }
+    /*
     public void añadirProductoVendido (Pedido pedido){
+
+
         List<Producto> productosList = pedido.productosList;
         List<String> numDeCadaProducto = pedido.numDeCadaProducto;
         int j=0;
@@ -134,6 +111,7 @@ public class ProductManagerImpl implements ProductManager {
 
 
     }
+    */
     public boolean realizarPedido (String nombre, Pedido pedido){
         // logger.info(pedido)
         boolean resp = false;
@@ -142,30 +120,47 @@ public class ProductManagerImpl implements ProductManager {
             return resp;
         }
         else{
-            pedido.setUsuario(nombre);
+            pedido.setUsuario(u);
             resp = consultarPedido(pedido);
-            if (resp==true){
+            if (resp){
                 listaPedidosTotal.add(pedido);
-                for (Pedido pedi: listaPedidosTotal){
-                    logger.log(Level.SEVERE,  pedi.getUsuario());
-                    logger.log(Level.SEVERE,  "pedi.productosList.get(0)");
-                }
                 contadorPedidos++;
             }
             return resp;
         }
     }
+
     public Pedido servirPedido (){
+
         Pedido p = null;
-        //no hace falta revisar el nombre del usuario ya que se ha hecho en realizar el pedido
-        //sin el size
-        //if (i<=contadorPedidos){
-        //   p = listaPedidosTotal.get(i);
-        //con size
+        p = listaPedidosTotal.poll();
+
+        if (p==null) return p;
+
+        Usuario u = p.getUsuario();
+        List<LineaDePedido> lp = p.getListaDePedidos();
+        int num = 0;
+        Producto producto;
+
+        for (LineaDePedido linea: lp) {
+            num = linea.getNum();
+            producto = linea.getProducto();
+
+            producto.incrementar(num);
+            logger.log(Level.SEVERE, "value =" + producto.getNumeroVentas());
+        }
+        u.addPedido(p);
+        return p;
+/*
+        ////////
         int x = listaPedidosTotal.size();
             logger.log(Level.SEVERE,  "x");
         if (i<x){
             p = listaPedidosTotal.get(x-i);
+
+           // p = listaPedidosTotal.pull();
+            //p.getUsuario();
+
             //añadimos los productos comprados
             añadirProductoVendido(p);
             String nombreUser = p.getUsuario();
@@ -186,35 +181,22 @@ public class ProductManagerImpl implements ProductManager {
         }
         else{
             return p;
-        }
+        }*/
     }
 
-    public List<Producto> listadoPedidos(String nombre){
+    public List<Pedido> listadoPedidos(String nombre){
+        List<Pedido> listarPedidosUsuario = null;
         //devuelve todos los productos dentro de todos los pedidos realizados por el usuario
         Usuario u = consultarUsuario(nombre);
         List<Producto> listaProductosUsuario = new ArrayList<Producto>();
         if (u == null){
             // enviar mensaje de usuario no existe
+            return listarPedidosUsuario;
         }
         else{
-            List<Pedido> listarPedidosUsuario = u.pedidoList;
-            for (Pedido pedi: listarPedidosUsuario){
-                //logger.log(Level.SEVERE,  pedi.getUsuario());
-                //he intenato meter una lista dentro de otra para meter todos los productos.
-                //Ahora em toca meter prodcuto por producto
-                // listaProductosUsuario.add(pedi.productosList);
-                int j=0;
-                int x = pedi.productosList.size();
-                while (j<x){
-                    listaProductosUsuario.add(pedi.productosList.get(j));
-                    j++;
-                }
-
-            }
-
+            listarPedidosUsuario = u.consultaPedidos();
+            return listarPedidosUsuario;
         }
-        return listaProductosUsuario;
-
     }
 
     public List<Producto> listadoProductosByVentas () {
@@ -226,11 +208,8 @@ public class ProductManagerImpl implements ProductManager {
 
         Collections.reverse(listaOrdenadaVentas);
         for (Producto product: listaOrdenadaVentas){
-            logger.log(Level.SEVERE,  product.getNombre());
+            logger.log(Level.SEVERE,  product.getNombre()+ "    " + product.getNumeroVentas());
         }
         return listaOrdenadaVentas;
-
-
-
     }
 }
