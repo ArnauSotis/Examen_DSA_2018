@@ -1,5 +1,6 @@
 package Product;
 
+import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class Pedido {
 
     public List<LineaDePedido> getListaDePedidos() {
         return this.lp;
+    }
+    public void setListaDePedidos(LinkedList pedido) {
+        this.lp = pedido;
     }
 
 

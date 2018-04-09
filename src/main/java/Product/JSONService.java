@@ -14,21 +14,21 @@ public class JSONService {
         protected ProductManagerImpl productManagerImpl;
 
         public JSONService() {
-            productManagerImpl = Singleton.getInstance().getImpl();
-
-            if (productManagerImpl.iniciadorRest==0) {
+            this.productManagerImpl = Singleton.getInstance().getImpl();
+            int x = this.productManagerImpl.getIniciadorRest();
+            if (x==0) {
                 productManagerImpl.productosCreados();
                 productManagerImpl.usuariosExistentes();
                 String nombre = "David";
-                Producto produc1 = new Producto("Patata", 2.3);
-                Producto produc2 = new Producto("Jamon", 3);
+                Producto produc1 = this.productManagerImpl.consultarProducto("Patata");
+                Producto produc2 = this.productManagerImpl.consultarProducto("Jamon");
                 Pedido p = new Pedido();
 
                 p.add(produc1,1);
                 p.add(produc2,3);
 
                 productManagerImpl.realizarPedido(nombre, p);
-                productManagerImpl.iniciadorRest=1;
+                productManagerImpl.modIniciadorRest();
             }
 
         }
@@ -79,8 +79,10 @@ public class JSONService {
         @POST
         @Path("/compra/{user}")
         @Consumes(MediaType.APPLICATION_JSON)
-        //public Response (@PathParam("user") String user,@PathParam("list") List<Producto> list) {
         public Response compra (@PathParam("user") String user, Pedido pedido) {
+        //public Response compra (@PathParam("user") String user, LinkedList pedido) {
+            //Pedido p = null;
+            //p.setListaDePedidos(pedido);
             boolean col  = productManagerImpl.realizarPedido(user, pedido);
             if (col){
                 return Response.status(201).entity("Pedio preparado para realizar").build();

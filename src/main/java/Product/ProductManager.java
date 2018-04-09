@@ -21,5 +21,9 @@ public interface ProductManager {
     boolean consultarProductoCatalogo (Producto p);
     void addUser (Usuario newUser);
     void addProduct (Producto newProduct);
+    void modIniciadorTest ();
+    void modIniciadorRest ();
+    int getIniciadorRest ();
+    int getIniciadorTest ();
 
 }

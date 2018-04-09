@@ -23,20 +23,21 @@ public class ProductManagerImplTest {
     @Before
     public void setUp() {
         this.p = Singleton.getInstance().getImpl();
-        Usuario david = new Usuario("David2");
-        Usuario juan = new Usuario("Juan");
-        this.patata = new Producto("Patata", 55);
-        this.cafe = new Producto("cafe", 2);
-        this.cocaCola = new Producto("coca cola", 1.5);
+        int x = this.p.getIniciadorTest();
+        if (x==0) {
+            Usuario david = new Usuario("David2");
+            Usuario juan = new Usuario("Juan");
+            this.patata = new Producto("Patata", 55);
+            this.cafe = new Producto("cafe", 2);
+            this.cocaCola = new Producto("coca cola", 1.5);
 
-        this.p.addUser(david);
-        this.p.addUser(juan);
-        this.p.addProduct(patata);
-        this.p.addProduct(cafe);
-        this.p.addProduct(cocaCola);
-
-
-//        List<Producto> listaCompraUser = new ArrayList<Producto>();
+            this.p.addUser(david);
+            this.p.addUser(juan);
+            this.p.addProduct(patata);
+            this.p.addProduct(cafe);
+            this.p.addProduct(cocaCola);
+            this.p.modIniciadorTest();
+        }
     }
 
     @After
@@ -45,7 +46,23 @@ public class ProductManagerImplTest {
     }
 
 
+    @Test
+    public void listarProductosTest() {
+        List<Producto> listarProductos = this.p.listarProductos();
+        assertEquals("coca cola", listarProductos.get(0).getNombre());
 
+        Producto patata = this.p.consultarProducto("Patata");
+        Producto cafe = this.p.consultarProducto("cafe");
+        Producto cocaCola = this.p.consultarProducto("coca cola");
+        List<Producto> ordenadaPorPrecio = new ArrayList<Producto>();
+        ordenadaPorPrecio.add(patata);
+        ordenadaPorPrecio.add(cafe);
+        ordenadaPorPrecio.add(cocaCola);
+        Collections.sort(ordenadaPorPrecio, Comparator.comparing(Producto::getPrecio));
+        assertEquals(ordenadaPorPrecio.size(), listarProductos.size());
+        assertEquals("coca cola", listarProductos.get(0).getNombre());
+
+    }
     @Test
     public void consultarUsuarioTest() {
         Usuario resultadoReal = p.consultarUsuario("David2");
@@ -77,24 +94,6 @@ public class ProductManagerImplTest {
         //Ha de devolver null
         Usuario error = p.identificarse("XXXXX");
         assertNull(error);
-    }
-
-    @Test
-    public void listarProductosTest() {
-        List<Producto> listarProductos = this.p.listarProductos();
-        assertEquals("coca cola", listarProductos.get(0).getNombre());
-
-        Producto patata = this.patata;
-        Producto cafe = this.cafe;
-        Producto cocaCola = this.cocaCola;
-        List<Producto> ordenadaPorPrecio = new ArrayList<Producto>();
-        ordenadaPorPrecio.add(patata);
-        ordenadaPorPrecio.add(cafe);
-        ordenadaPorPrecio.add(cocaCola);
-        Collections.sort(ordenadaPorPrecio, Comparator.comparing(Producto::getPrecio));
-        assertEquals(ordenadaPorPrecio.size(), listarProductos.size());
-        assertEquals("coca cola", listarProductos.get(0).getNombre());
-
     }
 
     @Test

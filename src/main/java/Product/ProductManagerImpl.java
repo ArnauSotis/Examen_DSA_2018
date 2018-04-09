@@ -10,11 +10,23 @@ public class ProductManagerImpl implements ProductManager {
     // contadorPedidos per saber quin tamany te la llista de pedidos total
     int contadorPedidos = 0;
     int i = 0;
-    int iniciadorRest =0;
-
+    private int iniciadorRest =0;
+    private int iniciadorTest=0;
     Scanner sc = new Scanner(System.in);
     Logger logger = Logger.getLogger("myLogger");
 
+    public void modIniciadorTest (){
+        this.iniciadorTest=1;
+    }
+    public int getIniciadorTest(){
+        return this.iniciadorTest;
+    }
+    public int getIniciadorRest (){
+        return this.iniciadorRest;
+    }
+    public void modIniciadorRest (){
+        this.iniciadorRest=1;
+    }
     public void productosCreados() {
         //creamos algunos productos por defecto
         Producto produc1 = new Producto("Patata", 2.3);
