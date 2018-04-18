@@ -1,4 +1,4 @@
-package Product;
+package Principal;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.http.server.StaticHttpHandler;
@@ -25,7 +25,7 @@ public class MainRest {
         // create a resource config that scans for JAX-RS resources and providers
         // in edu.upc.dsa package
         //aqui he tocat jo !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        final ResourceConfig rc = new ResourceConfig().packages("Product");
+        final ResourceConfig rc = new ResourceConfig().packages("Principal");
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI

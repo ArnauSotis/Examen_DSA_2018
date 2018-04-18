@@ -1,0 +1,1 @@
+Sería una tabla n:m con una tabla de Alumnos (nombre, instituto, numero de operaciones), una tabla de Instituto (nombre, alumnos, numero total) yuna relación entre las dos tablas
